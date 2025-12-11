@@ -32,18 +32,23 @@
 # Adding up all the invalid IDs in this example produces 1227775554.
 #
 # What do you get if you add up all of the invalid IDs?
+#comment faire ? 
+# - diviser la grande liste de nombre en sous listes qui seront nos intervalles ex : 11-22, 95-115, 998-1012... le premier élément sera une liste seule [11-22]
+# - vérifier les doubles dans chaque intervalle 11-22 a deux chiffres double 11 et 22, 95-115 a un chiffre double 99...
+
 class Jour_2:
     def __init__(self):
         self.invalid_ids = []  # Liste pour stocker les IDs invalides
     def __str__(self):
         return f"ids invalides: {self.invalid_ids}, somme des id invalides: {sum(self.invalid_ids)}"
-    def est_id_invalide(self, n):
-        s = str(n)
-        longueur = len(s)
-        if longueur % 2 != 0:
-            return False  # Doit avoir une longueur paire
-        moitie = longueur // 2
-        return s[:moitie] == s[moitie:]  # Vérifie si les deux moitiés sont identiques
+    def trouver_id_invalide(self, n):
+        n = n.split(',')
+        for elmt in n:
+            elmt = elmt.split('-')
+            
+            
+            
+
 
 # préparation des données
 with open("2025/jour2_input.txt", "r") as f:
