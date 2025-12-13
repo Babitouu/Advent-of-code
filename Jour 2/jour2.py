@@ -36,20 +36,51 @@
 # - diviser la grande liste de nombre en sous listes qui seront nos intervalles ex : 11-22, 95-115, 998-1012... le premier élément sera une liste seule [11-22]
 # - vérifier les doubles dans chaque intervalle 11-22 a deux chiffres double 11 et 22, 95-115 a un chiffre double 99...
 
-class Jour_2:
+class Jour_2_Part1:
     def __init__(self):
         self.invalid_ids = []  # Liste pour stocker les IDs invalides
-    def __str__(self):
-        return f"ids invalides: {self.invalid_ids}, somme des id invalides: {sum(self.invalid_ids)}"
-    def trouver_id_invalide(self, n):
-        n = n.split(',')
-        for elmt in n:
-            elmt = elmt.split('-')
-            
-            
-            
+    def trouver_id_invalide(self, input_data):
+        ranges = input_data.strip().split(',')  # Diviser les intervalles par des virgules
+        for r in ranges:
+            start, end = map(int, r.split('-'))  # Diviser chaque intervalle en début et fin
+            for num in range(start, end + 1):
+                str_num = str(num)
+                length = len(str_num)
+                if length % 2 == 0:  # Vérifier si le nombre de chiffres est pair
+                    half = length // 2
+                    if str_num[:half] == str_num[half:]:  # Vérifier si les deux moitiés sont identiques
+                        self.invalid_ids.append(num)  # Ajouter l'ID invalide à la liste
+        return sum(self.invalid_ids)  # Retourner la somme des IDs invalides
+# préparer les données d'entrée
+with open('Jour 2/input_jour2_part1.txt', 'r') as file:
+    input_data = file.read()
+jour2_part1 = Jour_2_Part1()
+result = jour2_part1.trouver_id_invalide(input_data)
+print("La somme des IDs invalides est :", result)
 
-
-# préparation des données
-with open("2025/jour2_input.txt", "r") as f:
-    data = f.read().strip()
+# Partie 2
+class Jour_2_Part2:
+    def __init__(self):
+        self.invalid_ids = []  # Liste pour stocker les IDs invalides
+        self.diviseur = [2, 3, 5, 7, 11, 13]
+    def trouver_id_invalide(self, input_data):
+        ranges = input_data.strip().split(',')  # Diviser les intervalles par des virgules
+        for r in ranges:
+            start, end = map(int, r.split('-'))  # Diviser chaque intervalle en début et fin
+            for num in range(start, end + 1):
+                str_num = str(num)
+                length = len(str_num)
+                for div in self.diviseur:
+                    if length % div == 0:  # Vérifier si le nombre de chiffres est divisible par diviseur
+                        part_length = length // div
+                        parts = [str_num[i*part_length:(i+1)*part_length] for i in range(div)]
+                        if all(part == parts[0] for part in parts):  # Vérifier si toutes les parties sont identiques
+                            self.invalid_ids.append(num)  # Ajouter l'ID invalide à la liste
+                            break  # Sortir de la boucle des diviseurs une fois qu'un match est trouvé
+        return sum(self.invalid_ids)  # Retourner la somme des IDs invalides
+# préparer les données d'entrée
+with open('Jour 2/input_jour2_part2.txt', 'r') as file:
+    input_data = file.read()
+jour2_part2 = Jour_2_Part2()
+result = jour2_part2.trouver_id_invalide(input_data)
+print("La somme des IDs invalides est :", result)

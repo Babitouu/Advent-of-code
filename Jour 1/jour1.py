@@ -1,3 +1,4 @@
+
 # Consigne : --- Day 1: Secret Entrance ---
 # The Elves have good news and bad news.
 # 
@@ -55,7 +56,8 @@
 # Because the dial points at 0 a total of three times during this process, the password in this example is 3.
 # 
 # Analyze the rotations in your attached document. What's the actual password to open the door?
-class Jour_1:
+# Partie 1
+class Jour_1_Partie_1:
     def __init__(self):
         self.position_courante = 50 # Le cadran commence à 50
         self.compteur_zero = 0 # Compteur du nombre de fois où le cadran pointe sur 0
@@ -81,7 +83,7 @@ class Jour_1:
         compteur_zero = 0 # Compteur du nombre de fois où le cadran pointe sur 0
         
         for rotation_demande in rotations:
-            numero = Jour_1.rotation(numero,rotation_demande) % 100 # Effectue la rotation et ajuste pour le cercle
+            numero = Jour_1_Partie_1.rotation(numero,rotation_demande) % 100 # Effectue la rotation et ajuste pour le cercle
             
             if numero == 0:
                 compteur_zero += 1 # Incrémente le compteur si le cadran pointe sur 0
@@ -89,9 +91,41 @@ class Jour_1:
         return compteur_zero # Retourne le nombre total de fois où le cadran a pointé sur 0
 # Lecture du fichier d'entrée
 # Lecture du fichier d'entrée
-with open("input.txt", "r") as f:
+with open("/workspaces/Advent-of-code/Jour 1/input.txt", "r") as f:
     rotations = [line.strip() for line in f if line.strip()]
 
-jour1 = Jour_1()
-resultat = jour1.resoudre(rotations)
+jour1_part1 = Jour_1_Partie_1()
+resultat = jour1_part1.resoudre(rotations)
+print(f"Le mot de passe est : {resultat}")
+
+class Jour_1_Partie_2:
+    def __init__(self):
+        self.position_courante = 50 # Le cadran commence à 50
+        self.compteur_zero = 0 # Compteur du nombre de fois où le cadran pointe sur 0
+    
+    def __str__(self):
+        return f"Position courante: {self.position_courante} | Compteur de 0: {self.compteur_zero}" # Affichage de l'état actuel
+    
+    def resoudre(self, rotations: list) -> int:
+        """
+        Effectue une rotation sur le cadran en fonction de la demande.
+        """
+        nombre = 50
+        result = 0
+        for rotation_demande in rotations:
+            if rotation_demande[0] == "L":
+                for i in range(int(rotation_demande[1:])):
+                    nombre = (nombre - 1) % 100
+                    if nombre == 0:
+                        result += 1
+            else:
+                for i in range(int(rotation_demande[1:])):
+                    nombre = (nombre + 1) % 100
+                    if nombre == 0:
+                        result += 1
+        return result
+with open("/workspaces/Advent-of-code/Jour 1/input2.txt", "r") as f:
+    rotations2 = [line.strip() for line in f if line.strip()]
+jour1_part2 = Jour_1_Partie_2()
+resultat = jour1_part2.resoudre(rotations2)
 print(f"Le mot de passe est : {resultat}")
