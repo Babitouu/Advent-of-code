@@ -83,4 +83,4 @@ with open('Jour 2/input_jour2_part2.txt', 'r') as file:
     input_data = file.read()
 jour2_part2 = Jour_2_Part2()
 result = jour2_part2.trouver_id_invalide(input_data)
-print("La somme des IDs invalides est :", result)
+print("La somme des  invalIDsides est :", result)
