@@ -30,23 +30,56 @@ class Jour3:
         volt_max = 0 # initialisation du voltage max
         for banks in self.input: # pour chaque banque de batteries
             batterie_max = banks[0]
+            
             indice_batterie_max = 0 # indice de la batterie avec le voltage max nécessaire pour chercher la deuxième batterie correctement
-            indice_batterie_2max = 0 # indice de la deuxième batterie avec le voltage max
-            for i in range(1,len(banks)): # on cherche la première batterie avec le plus grand voltage
+            
+            for i in range(1,len(banks)-1): # on cherche la première batterie avec le plus grand voltage jusqu'à l'avant dernière batterie
+                
                 if int(banks[i]) > int(batterie_max) : # si on trouve une batterie avec un voltage plus grand
                     batterie_max = banks[i] # on met à jour la batterie max
                     indice_batterie_max = i # on met à jour l'indice de la batterie max pour éviter de la prendre deux fois
-            batterie_2max = banks[0] if indice_batterie_max != 0 else banks[1] # on initialise la deuxième batterie max
-            for j in range(1,len(banks)): 
-                if j != indice_batterie_max and int(banks[j]) > int(batterie_2max): # si on trouve une batterie avec un voltage plus grand et que ce n'est pas la première batterie max
-                    batterie_2max = banks[j]
-                    indice_batterie_2max = j  # on met à jour l'indice de la deuxième batterie max
-            if indice_batterie_max > indice_batterie_2max: # on s'assure que la première batterie max est avant la deuxième dans la liste pour former le bon nombre
-                batterie_max, batterie_2max = batterie_2max, batterie_max
+            
+            batterie_2max = banks[indice_batterie_max+1] # on initialise la deuxième batterie max
+            
+            for j in range(indice_batterie_max+2,len(banks)): 
+                
+                if int(banks[j]) > int(batterie_2max): # si on trouve une batterie avec un voltage plus grand
+                    batterie_2max = banks[j] # on met à jour la deuxième batterie max
+            
             volt_max += int(batterie_max + batterie_2max) # on ajoute le voltage des deux batteries (pas mathématiquement) max au voltage total
-# j'ai un problème futur moi, le dernier exemple donné dans le texte (818181911112111) ne fonctionnera pas car il faut prendre 9 et 2 or ici on prendra 8 et 9 
         return volt_max
 # On prépare les données
-with open('Jour 3/input_jour3.txt', 'r') as f: 
-    input_jour3 = Jour3(f.read().splitlines())
+#with open('Jour 3/input_jour3.txt', 'r') as f: 
+    #input_jour3 = Jour3(f.read().splitlines())
+#print(input_jour3.resoudre_probleme())
+
+class Jour3_part2:
+    def __init__(self, input):
+        self.input = input # on créé l'objet avec son input
+    
+    def resoudre_probleme(self):
+        volt_max = 0 # initialisation du voltage max
+        
+        for banks in self.input:
+            batterie_max = banks[0]
+            nombre_batteries_restantes = 12
+            indice_ancienne_batterie_max = 1
+            volt_bank_max = ''
+            while nombre_batteries_restantes > 0: # on cherche 12 batteries
+                
+                for j in range(indice_ancienne_batterie_max, len(banks)-nombre_batteries_restantes): # on commence à chercher après la dernière batterie prise et on s'arrête avant pour garder de la place pour les autres batteries
+                
+                    if int(banks[j]) >= int(batterie_max): 
+                        batterie_max = banks[j]
+                
+                nombre_batteries_restantes -= 1
+                indice_ancienne_batterie_max = banks.index(batterie_max) + 1
+                volt_bank_max += batterie_max # on ajoute la batterie max au voltage de la banque (pas mathématiquement)
+                batterie_max = banks[indice_ancienne_batterie_max] # on réinitialise la batterie max pour la prochaine recherche
+            volt_max += int(volt_bank_max) # on ajoute le voltage de la banque au voltage total
+        return volt_max
+# erroné malheureusement
+# On prépare les données
+with open('Jour 3/input_jour3part2.txt', 'r') as f: 
+    input_jour3 = Jour3_part2(f.read().splitlines())
 print(input_jour3.resoudre_probleme())
