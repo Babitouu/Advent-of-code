@@ -57,7 +57,7 @@ class Jour3_part2:
     def __init__(self, input):
         self.input = input # on créé l'objet avec son input
     
-    def resoudre_probleme(self):
+    def resoudre_probleme(self): # partie 1
         volt_max = 0 # initialisation du voltage max
         
         for banks in self.input:
@@ -78,8 +78,26 @@ class Jour3_part2:
                 batterie_max = banks[indice_ancienne_batterie_max] # on réinitialise la batterie max pour la prochaine recherche
             volt_max += int(volt_bank_max) # on ajoute le voltage de la banque au voltage total
         return volt_max
-# erroné malheureusement
+# partie 2 (erronée)
+    def resoudre_probleme2(self):
+        volt_max = 0
+        for banks in self.input:
+            volt_bank_max = ''
+            nombre_batteries_restantes = 12
+            batterie_max = banks[0]
+            indice_ancienne_batterie_max = 0
+            while nombre_batteries_restantes > 0:
+                for i in range(indice_ancienne_batterie_max,len(banks)-nombre_batteries_restantes):
+
+                    if int(banks[i]) > int(batterie_max):
+                        batterie_max = banks[i]
+
+                nombre_batteries_restantes -= 1
+                indice_ancienne_batterie_max = banks.index(batterie_max) + 1
+                volt_bank_max += batterie_max
+            volt_max += int(volt_bank_max)
+        return volt_max
 # On prépare les données
 with open('Jour 3/input_jour3part2.txt', 'r') as f: 
     input_jour3 = Jour3_part2(f.read().splitlines())
-print(input_jour3.resoudre_probleme())
+print(input_jour3.resoudre_probleme2())
